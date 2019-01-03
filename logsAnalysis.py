@@ -5,11 +5,13 @@ def topThreeArticles():
   """List the most popular three articles of all time"""
   conn = psycopg2.connect("dbname=news")
   cursor = conn.cursor()
-  cursor.execute( "select sub1.path, count(sub1.path) as num from "
-    + "(select concat('/article/', slug) as path from articles) as sub1, "
+  cursor.execute("create view av1 as select id, author, title, "
+    + "concat('/article/', slug) as path from articles;")
+  cursor.execute( "select av1.path, count(av1.path) as num from "
+    + "av1, "
     + "(select path from log where path like '/article/%') as sub2 "
-    + "where sub1.path = sub2.path "
-    + "group by sub1.path order by num desc limit 3" )
+    + "where av1.path = sub2.path "
+    + "group by av1.path order by num desc limit 3" )
   topArticles = cursor.fetchall()
   conn.close()
   return topArticles
