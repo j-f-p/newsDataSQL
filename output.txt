@@ -8,12 +8,13 @@ vagrant$ python logsAnalysis.py
     Bad things gone, say good people         170098
 
 
-                  Top 3 Viewed Authors
+             Authors in Order of Popularity
 
                  Author                 Total Article Views
             Ursula La Multa                  507594
          Rudolf von Treppenwitz              423457
          Anonymous Contributor               170098
+             Markoff Chaney                  84557
 
 
            Days with More than 1% Failed Requests

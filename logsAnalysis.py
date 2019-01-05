@@ -40,8 +40,8 @@ def topThreeArticles():
     conn.close()
     return topArticles
 
-def topThreeAuthors():
-    """List the most popular three authors of all time"""
+def authorsPopularity():
+    """List the authors in order of popularity"""
     conn = psycopg2.connect("dbname=news")
     cursor = conn.cursor()
 
@@ -59,11 +59,11 @@ def topThreeAuthors():
     cursor.execute(
         "select authors.name, v3.\"Author Views\" "
       + "from authors, v3 "
-      + "where authors.id = v3.author limit 3;")
+      + "where authors.id = v3.author;")
 
-    topAuthors = cursor.fetchall()
+    authors = cursor.fetchall()
     conn.close()
-    return topAuthors
+    return authors
 
 def errorProneDays():
     """List days when more than 1% of requests lead to errors"""
@@ -105,10 +105,10 @@ def printTopThreeArticles():
         print("{0:^40}{1:^16}".format(article[0], article[1]))
     print
 
-def printTopThreeAuthors():
-    print("\n{0:^56}\n".format("Top 3 Viewed Authors"))
+def printAuthorsPopularity():
+    print("\n{0:^56}\n".format("Authors in Order of Popularity"))
     print("{0:^40}{1:^16}".format("Author","Total Article Views"))
-    for article in topThreeAuthors():
+    for article in authorsPopularity():
         print("{0:^40}{1:^16}".format(article[0], article[1]))
     print
 
@@ -120,5 +120,5 @@ def printErrorProneDays():
     print
 
 printTopThreeArticles()
-printTopThreeAuthors()
+printAuthorsPopularity()
 printErrorProneDays()
