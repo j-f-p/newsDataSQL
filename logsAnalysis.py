@@ -119,6 +119,6 @@ def printErrorProneDays():
         print("{0:^30}{1:^30.2f}".format(article[0], article[1]))
     print
 
-# printTopThreeArticles()
-# printTopThreeAuthors()
+printTopThreeArticles()
+printTopThreeAuthors()
 printErrorProneDays()
