@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
+
 # Logs Analysis
-# SQL views here created are temporary. They are not saved to the database.
+# SQL views created here are temporary. They are not saved to the database.
 
 import psycopg2
 
@@ -127,5 +129,5 @@ def printErrorProneDays():
 
 
 printTopThreeArticles()
-printAuthorsPopularity()
-printErrorProneDays()
+#printAuthorsPopularity()
+#printErrorProneDays()
