@@ -32,7 +32,8 @@ def dbConnect():
     try:
         conn = psycopg2.connect("dbname=news")
     except:
-        print "\n*** Exception: Failed to connect to database. ***\n"
+        print("\n*** Exception: Failed to connect to database. ***\n")
+        quit()
 
     return conn
 
