@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # Logs Analysis
 # SQL views created here are temporary. They are not saved to the database.
@@ -12,33 +12,41 @@ def generateCommonViews(cursor):
     # Create articles view with path instead of slug so that this view can be
     # joined to a log view with path as the common column.
     cursor.execute(
-        "create view v1 as "
-        + "select id, author, title, concat('/article/', slug) as path "
-        + "from articles;")
+        """create view v1 as
+           select id, author, title, concat('/article/', slug) as path
+           from articles;""")
 
     # Create a view that joins components of the articles and log tables.
     # Note that since slug is unique, according to '\d articles',
     # path = concat('/article/', slug) is also unique. Thus, view v2 is formed
     # by counting in a way to guarantee unique articles are counted.
     cursor.execute(
-        "create view v2 as "
-        + "select v1.path, count(1) as views from v1, "
-        + "(select path from log where path like '/article/%') as subs "
-        + "where v1.path = subs.path "
-        + "group by v1.path order by views desc")
+        """create view v2 as
+           select v1.path, count(1) as views from v1,
+           (select path from log where path like '/article/%') as subs
+           where v1.path = subs.path
+           group by v1.path order by views desc""")
 
+
+def dbConnect():
+    try:
+        conn = psycopg2.connect("dbname=news")
+    except:
+        print "\n*** Exception: Failed to connect to database. ***\n"
+
+    return conn
 
 def topThreeArticles():
     """List the most popular three articles of all time"""
-    conn = psycopg2.connect("dbname=news")
+    conn = dbConnect()
     cursor = conn.cursor()
 
     generateCommonViews(cursor)
 
     # Collect the relevant content in the expected order.
     cursor.execute(
-        "select v1.title, v2.views from v2, v1 "
-        + "where v2.path = v1.path order by views desc limit 3")
+        """select v1.title, v2.views from v2, v1
+           where v2.path = v1.path order by views desc limit 3""")
 
     topArticles = cursor.fetchall()
     conn.close()
@@ -47,7 +55,7 @@ def topThreeArticles():
 
 def authorsPopularity():
     """List the authors in order of popularity"""
-    conn = psycopg2.connect("dbname=news")
+    conn = dbConnect()
     cursor = conn.cursor()
 
     generateCommonViews(cursor)
@@ -55,16 +63,16 @@ def authorsPopularity():
     # Create a view with a request count grouped by authors
     # from v2 joined with v1.
     cursor.execute(
-        "create view v3 as "
-        + "select v1.author, sum(v2.views) as \"Author Views\" "
-        + "from v1, v2 where v1.path = v2.path "
-        + "group by v1.author order by \"Author Views\" desc;")
+        """create view v3 as
+           select v1.author, sum(v2.views) as \"Author Views\"
+           from v1, v2 where v1.path = v2.path
+           group by v1.author order by \"Author Views\" desc;""")
 
     # Collect the relevant content in the expected order.
     cursor.execute(
-        "select authors.name, v3.\"Author Views\" "
-        + "from authors, v3 "
-        + "where authors.id = v3.author;")
+        """select authors.name, v3.\"Author Views\"
+           from authors, v3
+           where authors.id = v3.author;""")
 
     authors = cursor.fetchall()
     conn.close()
@@ -73,28 +81,28 @@ def authorsPopularity():
 
 def errorProneDays():
     """List days when more than 1% of requests lead to errors"""
-    conn = psycopg2.connect("dbname=news")
+    conn = dbConnect()
     cursor = conn.cursor()
 
     # Create view v1 from articles containing request status and date.
     cursor.execute(
-        "create view v1 as select status, substring(time::text from 1 for 10) "
-        + "as date from log;")
+        """create view v1 as select status, substring(time::text from 1 for 10)
+           as date from log;""")
 
     # Create view v2 from v1 containing requests per date.
     cursor.execute(
-        "create view v2 as select date, count(1) as requests from v1 "
-        + "group by date;")
+        """create view v2 as select date, count(1) as requests from v1
+           group by date;""")
 
     # Create view v3 from v1 containing failed requests (errors) per date.
     cursor.execute(
-        "create view v3 as select date, count(1) as errors from v1 "
-        + "where v1.status != '200 OK' group by date order by date;")
+        """create view v3 as select date, count(1) as errors from v1
+           where v1.status != '200 OK' group by date order by date;""")
 
     # Create view v4 containing percentage failed requests per date.
     cursor.execute(
-        "create view v4 as select v2.date, 100.0 * errors / requests "
-        + "as \"% failed\" from v2, v3 where v2.date = v3.date;")
+        """create view v4 as select v2.date, 100.0 * errors / requests
+           as \"% failed\" from v2, v3 where v2.date = v3.date;""")
 
     # Collect days where percentage failed requests exceeds 1.
     cursor.execute("select date, \"% failed\" from v4 where \"% failed\" > 1;")
@@ -129,5 +137,5 @@ def printErrorProneDays():
 
 
 printTopThreeArticles()
-#printAuthorsPopularity()
-#printErrorProneDays()
+# printAuthorsPopularity()
+# printErrorProneDays()
