@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Logs Analysis
 # SQL views created here are temporary. They are not saved to the database.
@@ -31,11 +31,12 @@ def generateCommonViews(cursor):
 def dbConnect():
     try:
         conn = psycopg2.connect("dbname=news")
-    except:
+    except psycopg2.OperationalError:
         print("\n*** Exception: Failed to connect to database. ***\n")
         quit()
 
     return conn
+
 
 def topThreeArticles():
     """List the most popular three articles of all time"""
@@ -138,5 +139,5 @@ def printErrorProneDays():
 
 
 printTopThreeArticles()
-# printAuthorsPopularity()
-# printErrorProneDays()
+printAuthorsPopularity()
+printErrorProneDays()
