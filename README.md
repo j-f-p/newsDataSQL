@@ -81,7 +81,7 @@ The development environment for developing `logsAnalysis.py` is a Linux virtual 
 * Install [VirtualBox](https://www.virtualbox.org/)
 * Clone or download the [Udacity FSND Virtual Machine][1], which is contained by a repo head directory with various files and subdirectories.
 * Give the repo head directory a relevant name and place it in an appropriate location. The repo `vagrant/` subdirectory contains files that are shareable between the host and guest operating systems, hereafter referred to as the vagrant directory.
-* Enter the vagrant directory through a Linux command line interface and boot the virtual machine by:
+* Enter the vagrant directory through a Linux command line interface. Then, install and boot the virtual machine by:
 ```bash
 $ vagrant up
 ```
