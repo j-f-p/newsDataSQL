@@ -1,7 +1,7 @@
 # Logs Analysis
 
 ## Objective
-`logsAnalysis.py` is a Python script that employs SQL to gather information from a database of a news website contained in `newsdata.sql`. The Python script was written for a Udacity course about SQL with Python database APIs, including Postgresql.
+`./logsAnalysis.py` is a Python script that employs SQL to gather information from a database of a news website contained in `./newsdata.sql`. The Python script was written for a Udacity course about SQL with Python database APIs, including Postgresql.
 
 ## Description and Design
 `newsdata.sql` contains information about news articles, authors of these articles and the history of internet requests to view the articles from a prior time period. `logsAnalysis.py` returns three tables of data processed from the database. The respective contents of the tables are:
@@ -13,7 +13,7 @@
 
 The script is compatible with Python 3 and employs the psycopg2 Postgresql SQL database API. For each output table, there is a function for processing the data with SQL queries and a function for printing the results of the queries as a plain text table. In this way, the code is kept modular.
 
-The SQL queries employ temporary views, which are not saved to the database. A couple of the views are employed to generate two of the output tables. Thus, they were created in a separate function. The SQL queries, including those assigned to views, that are employed to generate the tables are listed below.
+The SQL queries employ temporary views (they are not saved to the database) for reasons of convenience of human encoding and decoding. A couple of the views are employed to generate two of the output tables. Thus, they were created in a separate function. All of the SQL queries, including those for creating views, that are employed to generate the tables are listed below.
 
 **First two views for processing Tables 1 and 2**
 ```SQL
@@ -100,6 +100,6 @@ $ ./logsAnalysis.py
 ```
 
 ## Sample Output
-Sample output is provided by `output.txt`.
+Sample output is provided by `./output.txt`.
 
 [1]: https://github.com/udacity/fullstack-nanodegree-vm
