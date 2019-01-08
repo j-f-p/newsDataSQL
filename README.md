@@ -1,10 +1,10 @@
 # Logs Analysis
 
 ## Objective
-`./logsAnalysis.py` is a Python script that employs SQL to gather information from a database of a news website contained in `./newsdata.sql`. The Python script was written for a Udacity course about SQL with Python database APIs, including Postgresql.
+`./logsAnalysis.py` is a Python script that employs SQL to gather information from a database of a news website contained in `./newsdata.zip`. The Python script was written for a Udacity course about SQL with Python database APIs, including Postgresql.
 
 ## Description and Design
-`newsdata.sql` contains information about news articles, authors of these articles and the history of internet requests to view the articles from a prior time period. `logsAnalysis.py` returns three tables of data processed from the database. The respective contents of the tables are:
+`newsdata.zip` contains information about news articles, authors of these articles and the history of internet requests to view the articles from a prior time period. `logsAnalysis.py` returns three tables of data processed from the database. The respective contents of the tables are:
 <ul>
 (Table 1) the most popular three articles from the database<br>
 (Table 2) all the article authors listed in order of author article views<br>
@@ -89,6 +89,7 @@ $ vagrant up
 ```bash
 $ vagrant ssh
 ```
+* Extract the database file `newsdata.sql` from the compressed folder `newsdata.zip`. Employ a file decompression procedure.
 * Create a working subdirectory in the vagrant directory and add `newsdata.sql` and `logsAnalysis.py`.
 * Enter the working directory and load the news database by:
 ```bash
